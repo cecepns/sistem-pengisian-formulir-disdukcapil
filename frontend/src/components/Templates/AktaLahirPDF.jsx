@@ -214,15 +214,13 @@ const AktaLahirPDF = ({ submission, fields }) => {
                 <p className="font-bold uppercase inline-block border-b border-black w-full text-center">({v('pelapor_nama') || '.....................................'})</p>
               </div>
               
-              <div className="absolute -left-2 bottom-2 w-4 h-24 border-l-2 border-black"></div>
-              
             </div>
           </div>
 
         </div>
 
         {/* Syarat Box (Outside border) */}
-        <div className="mt-1 text-[8px] border-l-2 border-t-2 border-black pl-2 pt-1 w-80">
+        <div className="mt-2 text-[8px] border-2 border-black p-2 w-full">
           <div className="font-bold underline mb-1">Kelengkapan Persyaratan :</div>
           <div className="space-y-0.5">
             <p>1. Surat Keterangan Kelahiran</p>

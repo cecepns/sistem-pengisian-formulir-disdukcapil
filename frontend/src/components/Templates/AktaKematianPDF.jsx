@@ -203,7 +203,7 @@ const AktaKematianPDF = ({ submission, fields }) => {
         </div>
 
         {/* Syarat Box (Outside border) */}
-        <div className="mt-1 text-[9px] border-l-2 border-t-2 border-black pl-2 pt-1 w-[400px]">
+        <div className="mt-2 text-[9px] border-2 border-black p-2 w-full">
           <div className="font-bold mb-1">Kelengkapan Persyaratan :</div>
           <div className="space-y-[2px]">
             <p>1. Surat Keterangan Kematian dari Dokter/Tenaga Kesehatan/Lainnya atau;</p>
