@@ -1,7 +1,9 @@
-import { ArrowRight, FileText, FileBadge, FileArchive, CheckCircle, Smartphone } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowRight, FileText, FileBadge, FileArchive, CheckCircle, Smartphone, Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const LandingPage = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
       {/* Navbar */}
@@ -12,7 +14,8 @@ const LandingPage = () => {
               <FileBadge className="h-8 w-8 text-primary-600" />
               <span className="font-bold text-xl text-slate-800 tracking-tight">Form Dukcapil</span>
             </div>
-            <div className="flex gap-4">
+            {/* Desktop Menu */}
+            <div className="hidden md:flex gap-4 items-center">
               <Link to="/tracking" className="text-slate-600 hover:text-primary-600 font-medium px-3 py-2 transition-colors">
                 Lacak Pengajuan
               </Link>
@@ -20,6 +23,33 @@ const LandingPage = () => {
                 Buat Pengajuan
               </Link>
             </div>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden flex items-center">
+              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-slate-600 hover:text-primary-600 focus:outline-none p-2">
+                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Menu Collapse */}
+        <div className={`md:hidden absolute w-full left-0 bg-white shadow-lg border-b border-slate-200 transition-all duration-300 origin-top overflow-hidden ${isMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0 h-0'}`}>
+          <div className="px-4 pt-2 pb-4 space-y-2 flex flex-col">
+            <Link 
+              to="/tracking" 
+              className="block px-3 py-3 text-base font-medium text-slate-700 hover:text-primary-600 hover:bg-slate-50 rounded-lg"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Lacak Pengajuan
+            </Link>
+            <Link 
+              to="/layanan" 
+              className="block px-3 py-3 text-base font-medium text-center text-white bg-primary-600 hover:bg-primary-700 rounded-lg shadow-sm"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Buat Pengajuan
+            </Link>
           </div>
         </div>
       </nav>

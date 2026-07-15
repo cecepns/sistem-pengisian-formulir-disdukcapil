@@ -81,7 +81,7 @@ const FormWizard = () => {
         return (
           <div key={field.field_name} className="mb-4">
             <label className="block text-sm font-medium text-slate-700 mb-2">{field.field_label} {field.is_required && '*'}</label>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-4">
               {radioOpts.map(opt => (
                 <label key={opt} className="flex items-center gap-2 cursor-pointer">
                   <input 
@@ -153,7 +153,7 @@ const FormWizard = () => {
                           <td key={col.name} className="px-4 py-2">
                             <input 
                               type={col.type || 'text'}
-                              className="w-full px-3 py-1.5 border border-slate-200 rounded focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
+                              className="w-full px-3 py-1.5 border border-slate-200 rounded focus:ring-1 focus:ring-primary-500 focus:border-primary-500 min-w-[120px]"
                               value={row[col.name] || ''}
                               onChange={(e) => handleRowChange(index, col.name, e.target.value)}
                               required={!!field.is_required}
@@ -310,15 +310,15 @@ const FormWizard = () => {
               
               {template?.requirements && template.requirements.length > 0 ? (
                 template.requirements.map(req => (
-                  <div key={req.id} className="border border-slate-200 rounded-xl p-4 flex items-center justify-between mb-4">
+                  <div key={req.id} className="border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
                     <div className="flex items-center gap-4">
-                      <div className="bg-slate-100 p-3 rounded-lg"><FileText className="w-6 h-6 text-slate-500" /></div>
+                      <div className="bg-slate-100 p-3 rounded-lg shrink-0"><FileText className="w-6 h-6 text-slate-500" /></div>
                       <div>
-                        <p className="font-semibold text-slate-800">{req.name}</p>
+                        <p className="font-semibold text-slate-800 text-sm sm:text-base">{req.name}</p>
                         <p className="text-xs text-slate-500">Wajib diupload (Max 2MB)</p>
                       </div>
                     </div>
-                    <button className="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-50">Upload</button>
+                    <button className="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 w-full sm:w-auto">Upload</button>
                   </div>
                 ))
               ) : (
@@ -349,25 +349,25 @@ const FormWizard = () => {
             <button 
               onClick={handlePrev}
               disabled={currentStep === 1}
-              className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-medium transition-colors ${currentStep === 1 ? 'opacity-0 cursor-default' : 'text-slate-600 hover:bg-slate-100'}`}
+              className={`flex items-center justify-center gap-2 px-3 sm:px-6 py-2.5 rounded-lg font-medium transition-colors text-sm sm:text-base ${currentStep === 1 ? 'opacity-0 cursor-default' : 'text-slate-600 hover:bg-slate-100'}`}
             >
-              <ChevronLeft className="w-4 h-4" /> Kembali
+              <ChevronLeft className="w-4 h-4 shrink-0" /> <span className="hidden sm:inline">Kembali</span>
             </button>
             
             {currentStep < maxStep ? (
               <button 
                 onClick={handleNext}
-                className="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors shadow-sm hover:shadow-md hover:-translate-y-0.5"
+                className="flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-5 sm:px-6 py-2.5 rounded-lg font-medium transition-colors shadow-sm hover:shadow-md hover:-translate-y-0.5 text-sm sm:text-base"
               >
-                Lanjut <ChevronRight className="w-4 h-4" />
+                Lanjut <ChevronRight className="w-4 h-4 shrink-0" />
               </button>
             ) : (
               <button 
                 onClick={handleSubmit}
                 disabled={submitting}
-                className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-2.5 rounded-lg font-bold transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 disabled:opacity-70"
+                className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 sm:px-8 py-2.5 rounded-lg font-bold transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 disabled:opacity-70 text-sm sm:text-base"
               >
-                {submitting ? 'Mengirim...' : 'Kirim Pengajuan'} <Check className="w-5 h-5" />
+                {submitting ? 'Mengirim...' : 'Kirim'} <Check className="w-5 h-5 shrink-0" />
               </button>
             )}
           </div>
