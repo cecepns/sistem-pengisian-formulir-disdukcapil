@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { request } from '../../utils/request';
 import { API_ENDPOINTS } from '../../utils/endpoints';
-import { Search, ChevronLeft, ChevronRight, Eye, FileEdit, Trash2, CheckCircle, XCircle, FileText } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, Eye, FileEdit, Trash2, CheckCircle, XCircle, FileText, Plus } from 'lucide-react';
 import DocumentPreview from '../../components/DocumentPreview';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -125,8 +125,12 @@ const Submissions = () => {
       )}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-2xl font-bold text-slate-800">Manajemen Pengajuan</h1>
-        <button className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm">
-          Export Laporan
+        <button 
+          onClick={() => navigate(`/admin/create${templateSlug ? `?template=${templateSlug}` : ''}`)}
+          className="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm"
+        >
+          <Plus className="w-5 h-5" />
+          Tambah Pengajuan
         </button>
       </div>
       

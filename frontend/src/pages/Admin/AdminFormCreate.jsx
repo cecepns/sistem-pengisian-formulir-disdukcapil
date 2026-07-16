@@ -40,7 +40,22 @@ const AdminFormCreate = () => {
     const fetchTemplates = async () => {
       try {
         const res = await request.get(API_ENDPOINTS.TEMPLATES.LIST);
-        if (res.success) setTemplates(res.data);
+        if (res.success) {
+          setTemplates(res.data);
+          
+          const params = new URLSearchParams(window.location.search);
+          const slug = params.get('template');
+          if (slug) {
+            const found = res.data.find(t => t.slug === slug);
+            if (found) {
+              setSelectedTemplateId(found.id.toString());
+              setLoading(true);
+              const detailRes = await request.get(API_ENDPOINTS.TEMPLATES.DETAIL(slug));
+              if (detailRes.success) setSelectedTemplate(detailRes.data);
+              setLoading(false);
+            }
+          }
+        }
       } catch (error) {
         console.error(error);
       }
