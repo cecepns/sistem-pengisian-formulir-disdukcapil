@@ -12,7 +12,7 @@ const LandingPage = () => {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-2">
               <FileBadge className="h-8 w-8 text-primary-600" />
-              <span className="font-bold text-xl text-slate-800 tracking-tight">Form Dukcapil</span>
+              <span className="font-bold text-xl text-slate-800 tracking-tight">Form Brio Jasa</span>
             </div>
             {/* Desktop Menu */}
             <div className="hidden md:flex gap-4 items-center">
@@ -66,7 +66,7 @@ const LandingPage = () => {
               Urus Dokumen Kependudukan Kini <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-sky-400">Lebih Mudah</span>
             </h1>
             <p className="text-lg md:text-xl text-slate-600 mb-10 leading-relaxed">
-              Sistem digital untuk membantu masyarakat mengisi formulir administrasi Disdukcapil secara online tanpa perlu antre panjang.
+              Sistem digital untuk membantu masyarakat mengisi formulir administrasi Brio Jasa secara online tanpa perlu antre panjang.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link to="/layanan" className="inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold rounded-full text-white bg-primary-600 hover:bg-primary-700 transition-all shadow-lg hover:shadow-primary-500/30 hover:-translate-y-1">
@@ -126,7 +126,7 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 flex flex-col items-center">
           <FileBadge className="h-10 w-10 text-primary-500 mb-4" />
           <p className="mb-2">Sistem Informasi Biro Jasa Administrasi Kependudukan</p>
-          <p className="text-sm">© {new Date().getFullYear()} Form Dukcapil. All rights reserved.</p>
+          <p className="text-sm">© {new Date().getFullYear()} Form Brio Jasa. All rights reserved.</p>
         </div>
       </footer>
     </div>

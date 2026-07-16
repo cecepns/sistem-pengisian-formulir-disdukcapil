@@ -109,7 +109,7 @@ const Tracking = () => {
                 {result.status.replace('_', ' ').toUpperCase()}
               </div>
               <p className="text-slate-600 mt-4 text-sm">
-                Berkas Anda sedang dalam antrean pengecekan oleh petugas Disdukcapil.
+                Berkas Anda sedang dalam antrean pengecekan oleh petugas Brio Jasa.
               </p>
             </div>
           </div>

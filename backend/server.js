@@ -174,16 +174,16 @@ app.post('/api/submissions', async (req, res) => {
   try {
     await connection.beginTransaction();
 
-    const { template_id, applicant_name, applicant_phone, fields } = req.body;
+    const { template_id, applicant_name, applicant_phone, fields, keterangan_kepemilikan } = req.body;
     
     const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
     const randomStr = Math.floor(10000 + Math.random() * 90000);
     const tracking_number = `DKP-${dateStr}-${randomStr}`;
 
     const [result] = await connection.query(
-      `INSERT INTO submissions (tracking_number, template_id, status, applicant_name, applicant_phone, submitted_at) 
-       VALUES (?, ?, 'menunggu_verifikasi', ?, ?, NOW())`,
-      [tracking_number, template_id, applicant_name, applicant_phone]
+      `INSERT INTO submissions (tracking_number, template_id, status, applicant_name, applicant_phone, keterangan_kepemilikan, submitted_at) 
+       VALUES (?, ?, 'menunggu_verifikasi', ?, ?, ?, NOW())`,
+      [tracking_number, template_id, applicant_name, applicant_phone, keterangan_kepemilikan]
     );
 
     const submissionId = result.insertId;
@@ -229,24 +229,91 @@ app.get('/api/submissions/track/:tracking_number', async (req, res) => {
 });
 
 // Admin Submissions
+
+app.get('/api/submissions/daily', async (req, res) => {
+  try {
+    const { template, date } = req.query;
+    let query = `
+      SELECT s.id, s.applicant_name, 
+      (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name = 'nik' LIMIT 1) as nik
+      FROM submissions s 
+      JOIN form_templates t ON s.template_id = t.id 
+      WHERE DATE(s.created_at) = ?
+    `;
+    let params = [date || new Date().toISOString().slice(0, 10)];
+    
+    if (template) {
+      query += ` AND t.slug = ?`;
+      params.push(template);
+    }
+    
+    query += ` ORDER BY s.created_at DESC`;
+
+    const [rows] = await pool.query(query, params);
+    res.json({ success: true, data: rows });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
+app.get('/api/submissions/archives', async (req, res) => {
+  try {
+    const { template } = req.query;
+    
+    let query = `
+      SELECT s.id, s.created_at as tanggal, t.name as jenis_dokumen, s.keterangan_kepemilikan, s.applicant_name as nama,
+      (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name = 'nik' LIMIT 1) as nik,
+      (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name = 'alamat' LIMIT 1) as alamat,
+      (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND (sf.field_name = 'nama_ayah' OR sf.field_name = 'nama_ibu' OR sf.field_name = 'nama_orang_tua') LIMIT 1) as nama_orang_tua
+      FROM submissions s 
+      JOIN form_templates t ON s.template_id = t.id 
+      WHERE s.status = 'selesai'
+    `;
+    let params = [];
+    
+    if (template) {
+      query += ` AND t.slug = ?`;
+      params.push(template);
+    }
+    
+    query += ` ORDER BY s.created_at DESC`;
+
+    const [rows] = await pool.query(query, params);
+    res.json({ success: true, data: rows });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
 app.get('/api/submissions', async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
     
-    let query = `SELECT s.*, t.name as template_name FROM submissions s JOIN form_templates t ON s.template_id = t.id`;
-    let countQuery = `SELECT COUNT(*) as total FROM submissions s`;
+    let query = `SELECT s.*, t.name as template_name FROM submissions s JOIN form_templates t ON s.template_id = t.id WHERE 1=1`;
+    let countQuery = `SELECT COUNT(*) as total FROM submissions s JOIN form_templates t ON s.template_id = t.id WHERE 1=1`;
+    let queryParams = [];
     
     if (req.query.search) {
-      query += ` WHERE s.applicant_name LIKE '%${req.query.search}%' OR s.tracking_number LIKE '%${req.query.search}%'`;
-      countQuery += ` WHERE s.applicant_name LIKE '%${req.query.search}%' OR s.tracking_number LIKE '%${req.query.search}%'`;
+      query += ` AND (s.applicant_name LIKE ? OR s.tracking_number LIKE ?)`;
+      countQuery += ` AND (s.applicant_name LIKE ? OR s.tracking_number LIKE ?)`;
+      queryParams.push(`%${req.query.search}%`, `%${req.query.search}%`);
+    }
+
+    if (req.query.template) {
+      query += ` AND t.slug = ?`;
+      countQuery += ` AND t.slug = ?`;
+      queryParams.push(req.query.template);
     }
 
     query += ` ORDER BY s.created_at DESC LIMIT ? OFFSET ?`;
+    let finalParams = [...queryParams, limit, offset];
 
-    const [rows] = await pool.query(query, [limit, offset]);
-    const [countRows] = await pool.query(countQuery);
+    const [rows] = await pool.query(query, finalParams);
+    const [countRows] = await pool.query(countQuery, queryParams);
     
     res.json({
       success: true,
@@ -298,11 +365,11 @@ app.put('/api/submissions/:id', async (req, res) => {
   try {
     await connection.beginTransaction();
     const { id } = req.params;
-    const { applicant_name, applicant_phone, fields } = req.body;
+    const { applicant_name, applicant_phone, fields, keterangan_kepemilikan } = req.body;
 
     await connection.query(
-      `UPDATE submissions SET applicant_name = ?, applicant_phone = ? WHERE id = ?`,
-      [applicant_name, applicant_phone, id]
+      `UPDATE submissions SET applicant_name = ?, applicant_phone = ?, keterangan_kepemilikan = ? WHERE id = ?`,
+      [applicant_name, applicant_phone, keterangan_kepemilikan, id]
     );
 
     if (fields && Array.isArray(fields)) {

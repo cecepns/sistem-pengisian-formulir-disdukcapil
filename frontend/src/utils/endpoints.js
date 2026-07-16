@@ -21,6 +21,8 @@ export const API_ENDPOINTS = {
     UPDATE: (id) => `/submissions/${id}`,
     UPDATE_STATUS: (id) => `/submissions/${id}/status`,
     DELETE: (id) => `/submissions/${id}`,
+    DAILY: "/submissions/daily",
+    ARCHIVES: "/submissions/archives",
   },
   DASHBOARD: {
     STATS: "/dashboard/stats"

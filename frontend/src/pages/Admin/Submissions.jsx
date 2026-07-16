@@ -3,11 +3,13 @@ import { request } from '../../utils/request';
 import { API_ENDPOINTS } from '../../utils/endpoints';
 import { Search, ChevronLeft, ChevronRight, Eye, FileEdit, Trash2, CheckCircle, XCircle, FileText } from 'lucide-react';
 import DocumentPreview from '../../components/DocumentPreview';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const Submissions = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const templateSlug = searchParams.get('template') || '';
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
   
@@ -40,7 +42,7 @@ const Submissions = () => {
       // Actually, looking at the backend, `GET /api/submissions` has `verifyToken` and `isAdmin`. 
       // I will remove the auth middleware temporarily from the backend route to allow testing.
       
-      const res = await request.get(`${API_ENDPOINTS.SUBMISSIONS.LIST_ADMIN}?page=${page}&limit=${limit}&search=${debouncedSearch}`);
+      const res = await request.get(`${API_ENDPOINTS.SUBMISSIONS.LIST_ADMIN}?page=${page}&limit=${limit}&search=${debouncedSearch}${templateSlug ? `&template=${templateSlug}` : ''}`);
       if (res.success) {
         setSubmissions(res.data);
         setTotal(res.pagination.total);
@@ -56,7 +58,7 @@ const Submissions = () => {
 
   useEffect(() => {
     fetchSubmissions();
-  }, [page, limit, debouncedSearch]);
+  }, [page, limit, debouncedSearch, templateSlug]);
 
   const handleStatusColor = (status) => {
     switch (status) {
@@ -97,7 +99,11 @@ const Submissions = () => {
 
   const handleVerify = async (id, currentStatus) => {
     try {
-      const newStatus = currentStatus === 'menunggu_verifikasi' ? 'diproses' : 'selesai';
+      let newStatus = currentStatus === 'menunggu_verifikasi' ? 'diproses' : 'selesai';
+      if (currentStatus === 'selesai') {
+        if (!window.confirm('Ubah status kembali menjadi "Proses"?')) return;
+        newStatus = 'diproses';
+      }
       const res = await request.put(API_ENDPOINTS.SUBMISSIONS.UPDATE_STATUS(id), { status: newStatus });
       if (res.success) {
         toast.success(`Status diubah menjadi ${newStatus}`);

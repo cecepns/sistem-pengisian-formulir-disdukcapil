@@ -18,8 +18,11 @@ const AdminLayout = () => {
 
   const navigation = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-    { name: 'Pengajuan', href: '/admin/submissions', icon: FileText },
-    { name: 'Buat Pengajuan Baru', href: '/admin/create', icon: FileBadge },
+    { name: 'Akta Kelahiran', href: '/admin/submissions?template=akta-lahir', icon: FileText },
+    { name: 'Akta Kematian', href: '/admin/submissions?template=akta-kematian', icon: FileText },
+    { name: 'Surat Pindah', href: '/admin/submissions?template=surat-pindah', icon: FileText },
+    { name: 'Arsip Dokumen', href: '/admin/archives', icon: FileBadge },
+    { name: 'Daftar Pengajuan Harian', href: '/admin/daily-submissions', icon: FileText },
   ];
 
   return (
@@ -42,7 +45,7 @@ const AdminLayout = () => {
         <div className="h-16 flex items-center justify-between px-6 border-b border-slate-800">
           <div className="flex items-center">
             <FileBadge className="w-8 h-8 text-primary-500 mr-3" />
-            <span className="text-white font-bold text-lg tracking-tight">Admin Dukcapil</span>
+            <span className="text-white font-bold text-lg tracking-tight">Admin Brio Jasa</span>
           </div>
           <button 
             className="lg:hidden text-slate-400 hover:text-white"
@@ -54,7 +57,7 @@ const AdminLayout = () => {
         
         <div className="flex-1 overflow-y-auto py-6 px-4 space-y-2">
           {navigation.map((item) => {
-            const isActive = location.pathname === item.href;
+            const isActive = (location.pathname + location.search) === item.href || (location.pathname === item.href && !item.href.includes('?'));
             return (
               <Link
                 key={item.name}

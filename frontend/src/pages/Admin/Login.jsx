@@ -48,7 +48,7 @@ const Login = () => {
           Admin Panel
         </h2>
         <p className="mt-2 text-center text-sm text-slate-600">
-          Sistem Informasi Layanan Disdukcapil
+          Sistem Informasi Layanan Brio Jasa
         </p>
       </div>
 
@@ -66,7 +66,7 @@ const Login = () => {
                 <input
                   type="email"
                   className="block w-full pl-10 pr-3 py-2.5 border border-slate-300 rounded-xl focus:ring-primary-500 focus:border-primary-500 sm:text-sm outline-none transition-colors"
-                  placeholder="admin@dukcapil.local"
+                  placeholder="admin@briojasa.local"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -116,7 +116,7 @@ const Login = () => {
             </div>
 
             {/* <div className="text-center mt-4">
-              <p className="text-xs text-slate-500">Gunakan email: <b>admin@dukcapil.local</b> | pass: <b>password</b></p>
+              <p className="text-xs text-slate-500">Gunakan email: <b>admin@briojasa.local</b> | pass: <b>password</b></p>
             </div> */}
           </form>
         </div>

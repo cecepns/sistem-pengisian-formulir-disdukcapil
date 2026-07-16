@@ -12,6 +12,8 @@ import Dashboard from './pages/Admin/Dashboard';
 import Submissions from './pages/Admin/Submissions';
 import AdminFormCreate from './pages/Admin/AdminFormCreate';
 import AdminFormEdit from './pages/Admin/AdminFormEdit';
+import DailySubmissions from './pages/Admin/DailySubmissions';
+import Archives from './pages/Admin/Archives';
 import Login from './pages/Admin/Login';
 
 function App() {
@@ -32,6 +34,8 @@ function App() {
           <Route path="submissions" element={<Submissions />} />
           <Route path="submissions/edit/:id" element={<AdminFormEdit />} />
           <Route path="create" element={<AdminFormCreate />} />
+          <Route path="daily-submissions" element={<DailySubmissions />} />
+          <Route path="archives" element={<Archives />} />
         </Route>
 
         {/* Catch all */}
