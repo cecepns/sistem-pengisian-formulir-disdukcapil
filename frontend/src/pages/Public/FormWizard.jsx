@@ -37,26 +37,24 @@ const FormWizard = () => {
       case 'date':
         return (
           <div key={field.field_name} className="mb-4">
-            <label className="block text-sm font-medium text-slate-700 mb-1">{field.field_label} {field.is_required && '*'}</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">{field.field_label}</label>
             <input 
               type={field.field_type} 
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
               value={formData[field.field_name] || ''}
               onChange={(e) => setFormData({...formData, [field.field_name]: e.target.value})}
-              required={!!field.is_required}
             />
           </div>
         );
       case 'textarea':
         return (
           <div key={field.field_name} className="mb-4">
-            <label className="block text-sm font-medium text-slate-700 mb-1">{field.field_label} {field.is_required && '*'}</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">{field.field_label}</label>
             <textarea 
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
               value={formData[field.field_name] || ''}
               onChange={(e) => setFormData({...formData, [field.field_name]: e.target.value})}
               rows="3"
-              required={!!field.is_required}
             ></textarea>
           </div>
         );
@@ -64,12 +62,11 @@ const FormWizard = () => {
         const opts = field.options ? JSON.parse(field.options) : [];
         return (
           <div key={field.field_name} className="mb-4">
-            <label className="block text-sm font-medium text-slate-700 mb-1">{field.field_label} {field.is_required && '*'}</label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">{field.field_label}</label>
             <select 
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
               value={formData[field.field_name] || ''}
               onChange={(e) => setFormData({...formData, [field.field_name]: e.target.value})}
-              required={!!field.is_required}
             >
               <option value="">-- Pilih --</option>
               {opts.map(opt => <option key={opt} value={opt}>{opt}</option>)}
@@ -80,7 +77,7 @@ const FormWizard = () => {
         const radioOpts = field.options ? JSON.parse(field.options) : [];
         return (
           <div key={field.field_name} className="mb-4">
-            <label className="block text-sm font-medium text-slate-700 mb-2">{field.field_label} {field.is_required && '*'}</label>
+            <label className="block text-sm font-medium text-slate-700 mb-2">{field.field_label}</label>
             <div className="flex flex-wrap gap-4">
               {radioOpts.map(opt => (
                 <label key={opt} className="flex items-center gap-2 cursor-pointer">
@@ -130,7 +127,7 @@ const FormWizard = () => {
 
         return (
           <div key={field.field_name} className="mb-6">
-            <label className="block text-sm font-medium text-slate-700 mb-2">{field.field_label} {field.is_required && '*'}</label>
+            <label className="block text-sm font-medium text-slate-700 mb-2">{field.field_label}</label>
             <div className="overflow-x-auto border border-slate-200 rounded-lg">
               <table className="w-full text-sm text-left">
                 <thead className="bg-slate-50 border-b border-slate-200">
@@ -156,7 +153,6 @@ const FormWizard = () => {
                               className="w-full px-3 py-1.5 border border-slate-200 rounded focus:ring-1 focus:ring-primary-500 focus:border-primary-500 min-w-[120px]"
                               value={row[col.name] || ''}
                               onChange={(e) => handleRowChange(index, col.name, e.target.value)}
-                              required={!!field.is_required}
                             />
                           </td>
                         ))}
@@ -297,7 +293,6 @@ const FormWizard = () => {
                   className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
                   value={applicantInfo.keterangan_kepemilikan}
                   onChange={(e) => setApplicantInfo({...applicantInfo, keterangan_kepemilikan: e.target.value})}
-                  required
                 >
                   <option value="">-- Pilih --</option>
                   <option value="Punya">Punya</option>

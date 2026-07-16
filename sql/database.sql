@@ -81,6 +81,7 @@ CREATE TABLE submissions (
   tracking_number VARCHAR(50) UNIQUE NOT NULL,
   template_id INT NOT NULL,
   status ENUM('draft', 'menunggu_verifikasi', 'diproses', 'perlu_revisi', 'selesai', 'ditolak') DEFAULT 'draft',
+  keterangan_kepemilikan ENUM('Punya', 'Tidak', 'Redaksional') DEFAULT NULL,
   applicant_name VARCHAR(255),
   applicant_phone VARCHAR(20),
   submitted_at TIMESTAMP NULL,
