@@ -143,12 +143,34 @@ app.get('/api/templates/:slug', async (req, res) => {
 // --- Dashboard Routes ---
 app.get('/api/dashboard/stats', async (req, res) => {
   try {
+    const { date } = req.query;
+    
     const [total] = await pool.query('SELECT COUNT(*) as count FROM submissions');
     const [menunggu] = await pool.query('SELECT COUNT(*) as count FROM submissions WHERE status = "menunggu_verifikasi"');
     const [selesai] = await pool.query('SELECT COUNT(*) as count FROM submissions WHERE status = "selesai"');
     const [ditolak] = await pool.query('SELECT COUNT(*) as count FROM submissions WHERE status = "ditolak" OR status = "revisi"');
     
     const [recent] = await pool.query('SELECT s.*, t.name as template_name FROM submissions s JOIN form_templates t ON s.template_id = t.id ORDER BY s.created_at DESC LIMIT 5');
+
+    let catQuery = `
+      SELECT t.name as category, COUNT(s.id) as count 
+      FROM form_templates t 
+      LEFT JOIN submissions s ON t.id = s.template_id AND DATE(s.created_at) = CURDATE()
+      GROUP BY t.id, t.name
+    `;
+    let queryParams = [];
+
+    if (date) {
+      catQuery = `
+        SELECT t.name as category, COUNT(s.id) as count 
+        FROM form_templates t 
+        LEFT JOIN submissions s ON t.id = s.template_id AND DATE(s.created_at) = ?
+        GROUP BY t.id, t.name
+      `;
+      queryParams = [date];
+    }
+
+    const [todayStats] = await pool.query(catQuery, queryParams);
 
     res.json({
       success: true,
@@ -157,7 +179,8 @@ app.get('/api/dashboard/stats', async (req, res) => {
           total: total[0].count,
           menunggu: menunggu[0].count,
           selesai: selesai[0].count,
-          ditolak: ditolak[0].count
+          ditolak: ditolak[0].count,
+          today: todayStats
         },
         recent
       }

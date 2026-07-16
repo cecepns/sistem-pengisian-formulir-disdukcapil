@@ -170,6 +170,7 @@ const Submissions = () => {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200">
+                <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-center w-16">No</th>
                 <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">No. Pengajuan</th>
                 <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Layanan</th>
                 <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Pemohon</th>
@@ -182,20 +183,23 @@ const Submissions = () => {
             <tbody className="divide-y divide-slate-200">
               {loading ? (
                 <tr>
-                  <td colSpan="7" className="px-6 py-12 text-center text-slate-500">
+                  <td colSpan="8" className="px-6 py-12 text-center text-slate-500">
                     <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mb-2"></div>
                     <p>Memuat data...</p>
                   </td>
                 </tr>
               ) : submissions.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="px-6 py-12 text-center text-slate-500">
+                  <td colSpan="8" className="px-6 py-12 text-center text-slate-500">
                     Tidak ada data pengajuan yang ditemukan.
                   </td>
                 </tr>
               ) : (
-                submissions.map((sub) => (
+                submissions.map((sub, index) => (
                   <tr key={sub.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 text-center font-medium">
+                      {(page - 1) * limit + index + 1}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-primary-700">{sub.tracking_number}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-700">{sub.template_name}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">{sub.applicant_name}</td>

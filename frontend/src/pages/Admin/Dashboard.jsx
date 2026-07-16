@@ -9,11 +9,13 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({ stats: null, recent: [] });
   const [loading, setLoading] = useState(true);
+  const [filterDate, setFilterDate] = useState('');
 
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        const res = await request.get(API_ENDPOINTS.DASHBOARD.STATS);
+        const url = filterDate ? `${API_ENDPOINTS.DASHBOARD.STATS}?date=${filterDate}` : API_ENDPOINTS.DASHBOARD.STATS;
+        const res = await request.get(url);
         if (res.success) {
           setData(res.data);
         }
@@ -24,7 +26,7 @@ const Dashboard = () => {
       }
     };
     fetchDashboard();
-  }, []);
+  }, [filterDate]);
 
   const stats = [
     { name: 'Total Pengajuan', value: data.stats?.total || 0, icon: FileText, color: 'text-blue-600', bg: 'bg-blue-100' },
@@ -53,6 +55,33 @@ const Dashboard = () => {
           </div>
         ))}
       </div>
+
+      {/* Category Submissions */}
+      {data.stats?.today && data.stats.today.length > 0 && (
+        <div className="mt-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
+            <h3 className="text-lg font-bold text-slate-800">
+              {filterDate ? 'Pengajuan Berdasarkan Tanggal' : 'Pengajuan Hari Ini'}
+            </h3>
+            <input 
+              type="date" 
+              className="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-sm text-slate-700"
+              value={filterDate}
+              onChange={(e) => setFilterDate(e.target.value)}
+            />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {data.stats.today.map((item) => (
+              <div key={item.category} className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm flex justify-between items-center">
+                <span className="text-sm font-medium text-slate-600">{item.category}</span>
+                <span className="text-lg font-bold text-primary-600 bg-primary-50 px-3 py-1 rounded-lg">
+                  {item.count}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Recent Submissions Table Placeholder */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mt-8">
