@@ -9,7 +9,7 @@ const Archives = () => {
   const [loading, setLoading] = useState(false);
   const [template, setTemplate] = useState('');
   const [templates, setTemplates] = useState([]);
-  const [status, setStatus] = useState('selesai');
+  const [status, setStatus] = useState('');
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
 
