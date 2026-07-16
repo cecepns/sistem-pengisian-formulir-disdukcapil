@@ -121,7 +121,7 @@ const Dashboard = () => {
                         {row.status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-600 hover:text-primary-900 font-medium cursor-pointer" onClick={() => navigate(`/admin/submissions/${row.id}/edit`)}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-600 hover:text-primary-900 font-medium cursor-pointer" onClick={() => navigate(`/admin/submissions/edit/${row.id}`)}>
                       Detail
                     </td>
                   </tr>
