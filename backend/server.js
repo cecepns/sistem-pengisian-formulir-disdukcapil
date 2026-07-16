@@ -235,7 +235,7 @@ app.get('/api/submissions/daily', async (req, res) => {
     const { template, date } = req.query;
     let query = `
       SELECT s.id, s.applicant_name, 
-      (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name = 'nik' LIMIT 1) as nik
+      (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name IN ('nik', 'pelapor_nik', 'pemohon_nik') LIMIT 1) as nik
       FROM submissions s 
       JOIN form_templates t ON s.template_id = t.id 
       WHERE DATE(s.created_at) = ?
@@ -259,18 +259,33 @@ app.get('/api/submissions/daily', async (req, res) => {
 
 app.get('/api/submissions/archives', async (req, res) => {
   try {
-    const { template } = req.query;
+    const { template, status, search } = req.query;
     
     let query = `
-      SELECT s.id, s.created_at as tanggal, t.name as jenis_dokumen, s.keterangan_kepemilikan, s.applicant_name as nama,
-      (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name = 'nik' LIMIT 1) as nik,
+      SELECT s.id, s.created_at as tanggal, t.name as jenis_dokumen, s.keterangan_kepemilikan, s.applicant_name as nama, s.status, s.tracking_number,
+      (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name IN ('nik', 'pelapor_nik', 'pemohon_nik') LIMIT 1) as nik,
       (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name = 'alamat' LIMIT 1) as alamat,
       (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND (sf.field_name = 'nama_ayah' OR sf.field_name = 'nama_ibu' OR sf.field_name = 'nama_orang_tua') LIMIT 1) as nama_orang_tua
       FROM submissions s 
       JOIN form_templates t ON s.template_id = t.id 
-      WHERE s.status = 'selesai'
+      WHERE 1=1
     `;
     let params = [];
+    
+    if (status) {
+      query += ` AND s.status = ?`;
+      params.push(status);
+    }
+    
+    if (template) {
+      query += ` AND t.slug = ?`;
+      params.push(template);
+    }
+    
+    if (search) {
+      query += ` AND (s.applicant_name LIKE ? OR s.tracking_number LIKE ?)`;
+      params.push(`%${search}%`, `%${search}%`);
+    }
     
     if (template) {
       query += ` AND t.slug = ?`;
