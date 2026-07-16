@@ -15,10 +15,10 @@ const Tracking = () => {
   const handleTrack = async (e) => {
     e?.preventDefault();
     if (!trackingNumber) return;
-    
+
     setLoading(true);
     setError('');
-    
+
     try {
       const res = await request.get(API_ENDPOINTS.SUBMISSIONS.TRACK(trackingNumber));
       if (res.success) {
@@ -55,15 +55,15 @@ const Tracking = () => {
           <form onSubmit={handleTrack} className="flex gap-4 max-w-lg mx-auto">
             <div className="relative flex-1">
               <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input 
-                type="text" 
+              <input
+                type="text"
                 className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-lg font-medium tracking-wider uppercase"
                 placeholder="DKP-..."
                 value={trackingNumber}
                 onChange={(e) => setTrackingNumber(e.target.value)}
               />
             </div>
-            <button 
+            <button
               type="submit"
               disabled={loading || !trackingNumber}
               className="bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-xl font-bold transition-all shadow-sm disabled:opacity-70 whitespace-nowrap"
@@ -80,7 +80,7 @@ const Tracking = () => {
             <h2 className="text-xl font-bold text-slate-800 mb-6 border-b pb-4 flex items-center gap-2">
               <FileText className="text-primary-600" /> Hasil Pencarian
             </h2>
-            
+
             <div className="grid sm:grid-cols-2 gap-6 mb-8">
               <div>
                 <p className="text-sm text-slate-500 font-medium mb-1">Nomor Pengajuan</p>
@@ -109,7 +109,7 @@ const Tracking = () => {
                 {result.status.replace('_', ' ').toUpperCase()}
               </div>
               <p className="text-slate-600 mt-4 text-sm">
-                Berkas Anda sedang dalam antrean pengecekan oleh petugas Brio Jasa.
+                Berkas Anda sedang dalam antrean pengecekan oleh petugas Briojasa.
               </p>
             </div>
           </div>

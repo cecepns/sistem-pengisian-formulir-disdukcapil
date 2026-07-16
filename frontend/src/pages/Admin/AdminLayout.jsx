@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  FileText, 
-  Users, 
-  Settings, 
-  Map, 
+import {
+  LayoutDashboard,
+  FileText,
+  Users,
+  Settings,
+  Map,
   LogOut,
   FileBadge,
   Menu,
@@ -27,10 +27,10 @@ const AdminLayout = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 flex overflow-hidden">
-      
+
       {/* Mobile Backdrop */}
       {isSidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         ></div>
@@ -45,16 +45,16 @@ const AdminLayout = () => {
         <div className="h-16 flex items-center justify-between px-6 border-b border-slate-800">
           <div className="flex items-center">
             <FileBadge className="w-8 h-8 text-primary-500 mr-3" />
-            <span className="text-white font-bold text-lg tracking-tight">Admin Brio Jasa</span>
+            <span className="text-white font-bold text-lg tracking-tight">Admin Briojasa</span>
           </div>
-          <button 
+          <button
             className="lg:hidden text-slate-400 hover:text-white"
             onClick={() => setIsSidebarOpen(false)}
           >
             <X className="w-6 h-6" />
           </button>
         </div>
-        
+
         <div className="flex-1 overflow-y-auto py-6 px-4 space-y-2">
           {navigation.map((item) => {
             const isActive = (location.pathname + location.search) === item.href || (location.pathname === item.href && !item.href.includes('?'));
@@ -62,11 +62,10 @@ const AdminLayout = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
-                  isActive 
-                    ? 'bg-primary-600 text-white' 
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${isActive
+                    ? 'bg-primary-600 text-white'
                     : 'hover:bg-slate-800 hover:text-white'
-                }`}
+                  }`}
               >
                 <item.icon className="w-5 h-5" />
                 <span className="font-medium">{item.name}</span>
@@ -88,7 +87,7 @@ const AdminLayout = () => {
         {/* Top Header */}
         <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-8 shadow-sm">
           <div className="flex items-center gap-4">
-            <button 
+            <button
               className="lg:hidden p-2 -ml-2 text-slate-600 hover:bg-slate-100 rounded-lg"
               onClick={() => setIsSidebarOpen(true)}
             >

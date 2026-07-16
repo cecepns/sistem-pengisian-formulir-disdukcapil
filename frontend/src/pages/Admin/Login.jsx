@@ -48,7 +48,7 @@ const Login = () => {
           Admin Panel
         </h2>
         <p className="mt-2 text-center text-sm text-slate-600">
-          Sistem Informasi Layanan Brio Jasa
+          Sistem Informasi Layanan Briojasa
         </p>
       </div>
 
