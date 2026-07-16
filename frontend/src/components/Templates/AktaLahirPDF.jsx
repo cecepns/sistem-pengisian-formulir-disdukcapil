@@ -234,7 +234,7 @@ const AktaLahirPDF = ({ submission, fields }) => {
 
 
       {/* PAGE 2: SPTJM KELAHIRAN */}
-      <div className="page-break w-[210mm] h-[297mm] overflow-hidden mx-auto p-[20mm] bg-white text-[12px] font-serif leading-relaxed">
+      <div className="page-break w-[210mm] h-[297mm] overflow-hidden mx-auto p-[20mm] bg-white text-[12px] leading-relaxed">
         <h3 className="text-center font-bold text-[13px] mb-6 leading-snug">
           SURAT PERNYATAAN TANGGUNG JAWAB MUTLAK (SPTJM) KEBENARAN<br/>DATA KELAHIRAN
         </h3>
@@ -318,7 +318,7 @@ const AktaLahirPDF = ({ submission, fields }) => {
 
 
       {/* PAGE 3: SPTJM DATA */}
-      <div className="page-break w-[210mm] h-[297mm] overflow-hidden mx-auto p-[20mm] bg-white text-[12px] font-serif leading-relaxed">
+      <div className="page-break w-[210mm] h-[297mm] overflow-hidden mx-auto p-[20mm] bg-white text-[12px] leading-relaxed">
         <h3 className="text-center font-bold text-[13px] mb-10 leading-snug">
           SURAT PERNYATAAN TANGGUNG JAWAB MUTLAK (SPTJM)<br/>KEBENARAN DATA
         </h3>
@@ -375,7 +375,7 @@ const AktaLahirPDF = ({ submission, fields }) => {
 
 
       {/* PAGE 4: SPTJM KEBENARAN SEBAGAI PASANGAN SUAMI ISTRI */}
-      <div className="page-break w-[210mm] h-[297mm] overflow-hidden mx-auto p-[20mm] bg-white text-[12px] font-serif leading-relaxed">
+      <div className="page-break w-[210mm] h-[297mm] overflow-hidden mx-auto p-[20mm] bg-white text-[12px] leading-relaxed">
         <h3 className="text-center font-bold text-[13px] mb-10 leading-snug">
           SURAT PERNYATAAN TANGGUNG JAWAB MUTLAK (SPTJM)<br/>KEBENARAN SEBAGAI PASANGAN SUAMI ISTRI
         </h3>

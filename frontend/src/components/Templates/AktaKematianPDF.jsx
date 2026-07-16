@@ -218,7 +218,7 @@ const AktaKematianPDF = ({ submission, fields }) => {
 
 
       {/* PAGE 2: SPTJM KEMATIAN */}
-      <div className="page-break w-[210mm] h-[297mm] overflow-hidden mx-auto p-[20mm] bg-white text-[12px] font-serif leading-relaxed">
+      <div className="page-break w-[210mm] h-[297mm] overflow-hidden mx-auto p-[20mm] bg-white text-[12px] leading-relaxed">
         <h3 className="text-center font-bold text-[13px] mb-8 leading-snug uppercase">
           SURAT PERNYATAAN TANGGUNG JAWAB MUTLAK (STJPM)<br/>KEBENARAN DATA KEMATIAN
         </h3>
