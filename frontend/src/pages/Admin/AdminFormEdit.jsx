@@ -34,7 +34,7 @@ const AdminFormEdit = () => {
   const [templates, setTemplates] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [formData, setFormData] = useState({});
-  const [applicantInfo, setApplicantInfo] = useState({ name: '', phone: '' });
+  const [applicantInfo, setApplicantInfo] = useState({ name: '', phone: '', keterangan_kepemilikan: '' });
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
@@ -50,7 +50,7 @@ const AdminFormEdit = () => {
         const subRes = await request.get(API_ENDPOINTS.SUBMISSIONS.DETAIL(id));
         if (subRes.success) {
           const submission = subRes.data;
-          setApplicantInfo({ name: submission.applicant_name, phone: submission.applicant_phone });
+          setApplicantInfo({ name: submission.applicant_name, phone: submission.applicant_phone, keterangan_kepemilikan: submission.keterangan_kepemilikan || '' });
           
           // Populate fields
           const initialForm = {};
@@ -85,6 +85,7 @@ const AdminFormEdit = () => {
       const payload = {
         applicant_name: applicantInfo.name,
         applicant_phone: applicantInfo.phone,
+        keterangan_kepemilikan: applicantInfo.keterangan_kepemilikan,
         fields: Object.keys(formData).map(key => ({
           field_name: key,
           field_value: formData[key]
@@ -307,6 +308,19 @@ const AdminFormEdit = () => {
                     required
                   />
                 </div>
+              </div>
+              <div className="mt-4">
+                <label className="block text-sm font-medium text-slate-700 mb-1">Keterangan Kepemilikan Dokumen (Akte/KK)</label>
+                <select 
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                  value={applicantInfo.keterangan_kepemilikan}
+                  onChange={(e) => setApplicantInfo({...applicantInfo, keterangan_kepemilikan: e.target.value})}
+                >
+                  <option value="">-- Pilih --</option>
+                  <option value="Punya">Punya</option>
+                  <option value="Tidak">Tidak Punya</option>
+                  <option value="Redaksional">Redaksional</option>
+                </select>
               </div>
             </div>
 

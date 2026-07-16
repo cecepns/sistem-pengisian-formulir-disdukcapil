@@ -264,8 +264,8 @@ app.get('/api/submissions/archives', async (req, res) => {
     let query = `
       SELECT s.id, s.created_at as tanggal, t.name as jenis_dokumen, s.keterangan_kepemilikan, s.applicant_name as nama, s.status, s.tracking_number,
       (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name IN ('nik', 'pelapor_nik', 'pemohon_nik') LIMIT 1) as nik,
-      (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name = 'alamat' LIMIT 1) as alamat,
-      (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND (sf.field_name = 'nama_ayah' OR sf.field_name = 'nama_ibu' OR sf.field_name = 'nama_orang_tua') LIMIT 1) as nama_orang_tua
+      (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name IN ('alamat', 'pelapor_alamat', 'pemohon_alamat') LIMIT 1) as alamat,
+      (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name IN ('nama_ayah', 'nama_ibu', 'nama_orang_tua', 'ayah_nama', 'ibu_nama') LIMIT 1) as nama_orang_tua
       FROM submissions s 
       JOIN form_templates t ON s.template_id = t.id 
       WHERE 1=1
@@ -308,7 +308,13 @@ app.get('/api/submissions', async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
     
-    let query = `SELECT s.*, t.name as template_name FROM submissions s JOIN form_templates t ON s.template_id = t.id WHERE 1=1`;
+    let query = `
+      SELECT s.*, t.name as template_name,
+      (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name IN ('alamat', 'pelapor_alamat', 'pemohon_alamat') LIMIT 1) as alamat
+      FROM submissions s 
+      JOIN form_templates t ON s.template_id = t.id 
+      WHERE 1=1
+    `;
     let countQuery = `SELECT COUNT(*) as total FROM submissions s JOIN form_templates t ON s.template_id = t.id WHERE 1=1`;
     let queryParams = [];
     

@@ -32,7 +32,7 @@ const AdminFormCreate = () => {
   const [selectedTemplateId, setSelectedTemplateId] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [formData, setFormData] = useState({});
-  const [applicantInfo, setApplicantInfo] = useState({ name: '', phone: '' });
+  const [applicantInfo, setApplicantInfo] = useState({ name: '', phone: '', keterangan_kepemilikan: '' });
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -94,6 +94,7 @@ const AdminFormCreate = () => {
         template_id: parseInt(selectedTemplateId),
         applicant_name: applicantInfo.name,
         applicant_phone: applicantInfo.phone,
+        keterangan_kepemilikan: applicantInfo.keterangan_kepemilikan,
         fields: Object.keys(formData).map(key => ({
           field_name: key,
           field_value: formData[key]
@@ -104,7 +105,7 @@ const AdminFormCreate = () => {
       if (res.success) {
         toast.success('Pengajuan berhasil dibuat oleh Admin!');
         setFormData({});
-        setApplicantInfo({ name: '', phone: '' });
+        setApplicantInfo({ name: '', phone: '', keterangan_kepemilikan: '' });
         setSelectedTemplateId('');
         setSelectedTemplate(null);
       }
@@ -324,6 +325,19 @@ const AdminFormCreate = () => {
                     required
                   />
                 </div>
+              </div>
+              <div className="mt-4">
+                <label className="block text-sm font-medium text-slate-700 mb-1">Keterangan Kepemilikan Dokumen (Akte/KK)</label>
+                <select 
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                  value={applicantInfo.keterangan_kepemilikan}
+                  onChange={(e) => setApplicantInfo({...applicantInfo, keterangan_kepemilikan: e.target.value})}
+                >
+                  <option value="">-- Pilih --</option>
+                  <option value="Punya">Punya</option>
+                  <option value="Tidak">Tidak Punya</option>
+                  <option value="Redaksional">Redaksional</option>
+                </select>
               </div>
             </div>
 
