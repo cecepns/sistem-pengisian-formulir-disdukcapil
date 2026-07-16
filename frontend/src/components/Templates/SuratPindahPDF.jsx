@@ -33,7 +33,7 @@ const SuratPindahPDF = ({ submission, fields }) => {
   const year = today.getFullYear();
 
   return (
-    <div className="w-full text-black bg-white">
+    <div className="w-full text-black bg-white" style={{ fontFamily: '"Times New Roman", Times, serif' }}>
       {/* PAGE 1: SURAT PINDAH */}
       <div className="page-break w-[210mm] h-[297mm] overflow-hidden mx-auto px-[15mm] py-[5mm] bg-white relative box-border flex flex-col text-[12px]">
         

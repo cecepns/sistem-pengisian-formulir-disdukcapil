@@ -46,7 +46,7 @@ const AktaKematianPDF = ({ submission, fields }) => {
   const year = today.getFullYear();
 
   return (
-    <div className="w-full text-black font-sans text-xs bg-white">
+    <div className="w-full text-black text-xs bg-white" style={{ fontFamily: '"Times New Roman", Times, serif' }}>
       
       {/* PAGE 1: F-2.01 (KEMATIAN) */}
       <div className="page-break w-[210mm] h-[297mm] overflow-hidden mx-auto p-[5mm] bg-white relative box-border flex flex-col">
