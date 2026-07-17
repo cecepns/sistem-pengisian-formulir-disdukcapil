@@ -234,7 +234,7 @@ const AktaLahirPDF = ({ submission, fields }) => {
 
 
       {/* PAGE 2: SPTJM KELAHIRAN */}
-      <div className="page-break w-[210mm] h-[297mm] overflow-hidden mx-auto p-[20mm] bg-white text-[12px] leading-relaxed">
+      <div className="page-break w-[210mm] h-[297mm] overflow-hidden mx-auto p-[20mm] bg-white text-[12px] leading-relaxed relative box-border flex flex-col">
         <h3 className="text-center font-bold text-[13px] mb-6 leading-snug">
           SURAT PERNYATAAN TANGGUNG JAWAB MUTLAK (SPTJM) KEBENARAN<br/>DATA KELAHIRAN
         </h3>
@@ -290,20 +290,27 @@ const AktaLahirPDF = ({ submission, fields }) => {
           Demikian surat pernyataan ini saya buat dengan sebenar-benarnya dan apabila dikemudian hari ternyata pernyataan saya ini tidak benar, maka saya bersedia diproses secara hukum sesuai dengan peraturan perundang-undangan dan dokumen yang diterbitkan akibat dari pernyataan ini menjadi tidak sah.
         </p>
 
-        <div className="flex justify-between">
+        <div className="flex justify-between mt-auto">
           <div className="w-64">
-            <p className="mb-20">Saksi I,</p>
-            <p className="border-b border-dotted border-black w-48 text-center">{v('saksi1_nama')}</p>
-            <p>NIK. {v('saksi1_nik')}</p>
+            <p className="mb-12">Saksi I,</p>
+            <p className="flex justify-between w-48">
+              <span>(</span>
+              <span className="font-bold border-b border-dotted border-black flex-1 text-center">{v('saksi1_nama') || '........................................'}</span>
+              <span>)</span>
+            </p>
+            <p>NIK. {v('saksi1_nik') || '........................................'}</p>
 
-            <p className="mb-20 mt-8">Saksi II,</p>
-            <p className="border-b border-dotted border-black w-48 text-center">{v('saksi2_nama')}</p>
-            <p>NIK. {v('saksi2_nik')}</p>
+            <p className="mb-12 mt-4">Saksi II,</p>
+            <p className="flex justify-between w-48">
+              <span>(</span>
+              <span className="font-bold border-b border-dotted border-black flex-1 text-center">{v('saksi2_nama') || '........................................'}</span>
+              <span>)</span>
+            </p>
           </div>
           <div className="w-64 text-center">
             <p>Indramayu, ......................... 20....</p>
             <p className="mb-24">Saya yang menyatakan,</p>
-            <p className="border-b border-dotted border-black font-bold uppercase inline-block min-w-[200px]">{v('pelapor_nama')}</p>
+            <p className="border-b border-dotted border-black font-bold uppercase inline-block min-w-[200px] mb-1">{v('pelapor_nama')}</p>
           </div>
         </div>
 
@@ -375,55 +382,81 @@ const AktaLahirPDF = ({ submission, fields }) => {
 
 
       {/* PAGE 4: SPTJM KEBENARAN SEBAGAI PASANGAN SUAMI ISTRI */}
-      <div className="page-break w-[210mm] h-[297mm] overflow-hidden mx-auto p-[20mm] bg-white text-[12px] leading-relaxed">
-        <h3 className="text-center font-bold text-[13px] mb-10 leading-snug">
-          SURAT PERNYATAAN TANGGUNG JAWAB MUTLAK (SPTJM)<br/>KEBENARAN SEBAGAI PASANGAN SUAMI ISTRI
+      <div className="page-break w-[210mm] h-[297mm] overflow-hidden mx-auto p-[20mm] bg-white text-[12px] leading-relaxed relative box-border flex flex-col">
+        <div className="absolute top-[15mm] right-[20mm] border border-black px-2 py-0.5 font-bold text-[13px]">F-2.04</div>
+        <h3 className="text-center font-bold text-[13px] mb-6 mt-4 leading-snug">
+          SURAT PERNYATAAN TANGGUNG JAWAB MUTLAK (SPTJM)<br/>KEBENARAN SEBAGAI PASANGAN SUAMI ISTERI
         </h3>
 
-        <p className="mb-6">Saya yang bertandatangan dibawah ini :</p>
+        <p className="mb-2">Saya yang bertanda tangan di bawah ini :</p>
         
-        <table className="w-full mb-6">
+        <table className="w-full mb-3 text-[11px] leading-tight">
           <tbody>
-            <tr><td className="w-48 pl-8">Nama</td><td className="w-4">:</td><td className="border-b border-dotted border-black">{v('ayah_nama')}</td></tr>
-            <tr><td className="w-48 pl-8">NIK</td><td className="w-4">:</td><td className="border-b border-dotted border-black">{v('ayah_nik')}</td></tr>
-            <tr><td className="w-48 pl-8">Tempat/tanggal lahir</td><td className="w-4">:</td><td className="border-b border-dotted border-black">{v('ayah_tempat_lahir')}, {v('ayah_tgl_lahir')}</td></tr>
-            <tr><td className="w-48 pl-8">Pekerjaan</td><td className="w-4">:</td><td className="border-b border-dotted border-black">{v('ayah_pekerjaan')}</td></tr>
-            <tr><td className="w-48 pl-8">Alamat</td><td className="w-4">:</td><td className="border-b border-dotted border-black">{v('ayah_alamat')}</td></tr>
+            <tr><td className="w-48 pl-8 pb-0.5">Nama</td><td className="w-4 pb-0.5">:</td><td className="border-b border-dotted border-black pb-0.5">{v('pelapor_nama')}</td></tr>
+            <tr><td className="w-48 pl-8 pb-0.5">NIK</td><td className="w-4 pb-0.5">:</td><td className="border-b border-dotted border-black pb-0.5">{v('pelapor_nik')}</td></tr>
+            <tr><td className="w-48 pl-8 pb-0.5">Tempat/Tanggal Lahir</td><td className="w-4 pb-0.5">:</td><td className="border-b border-dotted border-black pb-0.5">{v('pelapor_tempat_lahir')}, {v('pelapor_tgl_lahir')}</td></tr>
+            <tr><td className="w-48 pl-8 pb-0.5">Pekerjaan</td><td className="w-4 pb-0.5">:</td><td className="border-b border-dotted border-black pb-0.5">{v('pelapor_pekerjaan')}</td></tr>
+            <tr><td className="w-48 pl-8 pb-0.5">Alamat</td><td className="w-4 pb-0.5">:</td><td className="border-b border-dotted border-black pb-0.5">{v('pelapor_alamat')}</td></tr>
           </tbody>
         </table>
 
-        <p className="mb-4">Menyatakan bahwa:</p>
+        <p className="mb-2">menyatakan bahwa :</p>
 
-        <table className="w-full mb-10">
+        <table className="w-full mb-3 text-[11px] leading-tight">
           <tbody>
-            <tr><td className="w-48 pl-8">Nama</td><td className="w-4">:</td><td className="border-b border-dotted border-black">{v('ibu_nama')}</td></tr>
-            <tr><td className="w-48 pl-8">NIK</td><td className="w-4">:</td><td className="border-b border-dotted border-black">{v('ibu_nik')}</td></tr>
-            <tr><td className="w-48 pl-8">Tempat/tanggal lahir</td><td className="w-4">:</td><td className="border-b border-dotted border-black">{v('ibu_tempat_lahir')}, {v('ibu_tgl_lahir')}</td></tr>
-            <tr><td className="w-48 pl-8">Pekerjaan</td><td className="w-4">:</td><td className="border-b border-dotted border-black">{v('ibu_pekerjaan')}</td></tr>
-            <tr><td className="w-48 pl-8">Alamat</td><td className="w-4">:</td><td className="border-b border-dotted border-black">{v('ibu_alamat')}</td></tr>
+            <tr><td className="w-48 pl-8 pb-0.5">Nama</td><td className="w-4 pb-0.5">:</td><td className="border-b border-dotted border-black pb-0.5">{v('ibu_nama')}</td></tr>
+            <tr><td className="w-48 pl-8 pb-0.5">NIK</td><td className="w-4 pb-0.5">:</td><td className="border-b border-dotted border-black pb-0.5">{v('ibu_nik')}</td></tr>
+            <tr><td className="w-48 pl-8 pb-0.5">Tempat/Tanggal Lahir</td><td className="w-4 pb-0.5">:</td><td className="border-b border-dotted border-black pb-0.5">{v('ibu_tempat_lahir')}, {v('ibu_tgl_lahir')}</td></tr>
+            <tr><td className="w-48 pl-8 pb-0.5">Pekerjaan</td><td className="w-4 pb-0.5">:</td><td className="border-b border-dotted border-black pb-0.5">{v('ibu_pekerjaan')}</td></tr>
+            <tr><td className="w-48 pl-8 pb-0.5">Alamat</td><td className="w-4 pb-0.5">:</td><td className="border-b border-dotted border-black pb-0.5">{v('ibu_alamat')}</td></tr>
           </tbody>
         </table>
 
-        <p className="text-justify mb-24 leading-relaxed">
-          adalah benar isteri saya dan pernikahan kami tidak dapat dibuktikan dengan akta perkawinan/buku nikah.
-          <br/><br/>
-          Demikian surat pernyataan ini saya buat dengan sebenar-benarnya dan apabila dikemudian hari ternyata pernyataan saya ini tidak benar, maka saya bersedia diproses secara hukum sesuai dengan peraturan perundang-undangan dan dokumen yang diterbitkan akibat dari pernyataan ini menjadi tidak sah.
+        <p className="mb-2">adalah suami / isteri*) dari :</p>
+
+        <table className="w-full mb-4 text-[11px] leading-tight">
+          <tbody>
+            <tr><td className="w-48 pl-8 pb-0.5">Nama</td><td className="w-4 pb-0.5">:</td><td className="border-b border-dotted border-black pb-0.5">{v('ayah_nama')}</td></tr>
+            <tr><td className="w-48 pl-8 pb-0.5">NIK</td><td className="w-4 pb-0.5">:</td><td className="border-b border-dotted border-black pb-0.5">{v('ayah_nik')}</td></tr>
+            <tr><td className="w-48 pl-8 pb-0.5">Tempat/Tanggal Lahir</td><td className="w-4 pb-0.5">:</td><td className="border-b border-dotted border-black pb-0.5">{v('ayah_tempat_lahir')}, {v('ayah_tgl_lahir')}</td></tr>
+            <tr><td className="w-48 pl-8 pb-0.5">Pekerjaan</td><td className="w-4 pb-0.5">:</td><td className="border-b border-dotted border-black pb-0.5">{v('ayah_pekerjaan')}</td></tr>
+            <tr><td className="w-48 pl-8 pb-0.5">Alamat</td><td className="w-4 pb-0.5">:</td><td className="border-b border-dotted border-black pb-0.5">{v('ayah_alamat')}</td></tr>
+          </tbody>
+        </table>
+
+        <p className="mb-4">
+          sebagaimana tercantum dalam Kartu Keluarga (KK) Nomor : <span className="border-b border-dotted border-black inline-block min-w-[200px] text-center">{v('pelapor_no_kk')}</span>
         </p>
 
-        <div className="flex justify-between">
-          <div className="w-64">
-            <p className="mb-20">Saksi I,</p>
-            <p className="border-b border-dotted border-black w-48 text-center">{v('saksi1_nama')}</p>
-            <p>NIK. {v('saksi1_nik')}</p>
+        <p className="text-justify mb-8 leading-relaxed">
+          Demikian surat pernyataan ini saya buat dengan sebenar-benarnya dan apabila di kemudian hari ternyata pernyataan saya ini tidak benar, maka saya bersedia diproses secara hukum sesuai dengan peraturan perundang-undangan dan dokumen yang diterbitkan akibat dari pernyataan ini menjadi tidak sah.
+        </p>
 
-            <p className="mb-20 mt-8">Saksi II,</p>
-            <p className="border-b border-dotted border-black w-48 text-center">{v('saksi2_nama')}</p>
-            <p>NIK. {v('saksi2_nik')}</p>
+        <div className="flex justify-between mt-auto">
+          <div className="w-64">
+            <p className="mb-16">Saksi I,</p>
+            <p className="flex justify-between w-48">
+              <span>(</span>
+              <span className="font-bold border-b border-dotted border-black flex-1 text-center">{v('saksi1_nama') || '........................................'}</span>
+              <span>)</span>
+            </p>
+            <p>NIK. {v('saksi1_nik') || '........................................'}</p>
+
+            <p className="mb-16 mt-6">Saksi II,</p>
+            <p className="flex justify-between w-48">
+              <span>(</span>
+              <span className="font-bold border-b border-dotted border-black flex-1 text-center">{v('saksi2_nama') || '........................................'}</span>
+              <span>)</span>
+            </p>
           </div>
           <div className="w-64 text-center">
             <p>Indramayu, ......................... 20....</p>
-            <p className="mb-24">Saya yang menyatakan,</p>
-            <p className="border-b border-dotted border-black font-bold uppercase inline-block min-w-[200px]">{v('ayah_nama')}</p>
+            <p className="mb-6">Saya yang menyatakan,</p>
+            <div className="border border-red-300 bg-red-50 text-red-400 w-16 h-20 mx-auto mb-2 flex items-center justify-center text-[8px] tracking-widest uppercase rotate-90">
+              Materai<br/>Tempel
+            </div>
+            <p className="border-b border-dotted border-black font-bold uppercase inline-block min-w-[200px] mb-1">{v('pelapor_nama')}</p>
+            <p className="text-left pl-8">NIK. {v('pelapor_nik')}</p>
           </div>
         </div>
 

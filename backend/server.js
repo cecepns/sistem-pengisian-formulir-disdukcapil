@@ -257,8 +257,17 @@ app.get('/api/submissions/daily', async (req, res) => {
   try {
     const { template, date } = req.query;
     let query = `
-      SELECT s.id, s.applicant_name, 
-      (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name IN ('nik', 'pelapor_nik', 'pemohon_nik') LIMIT 1) as nik
+      SELECT s.id, 
+      CASE 
+        WHEN t.slug = 'akta-lahir' THEN COALESCE((SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name = 'anak_nama' LIMIT 1), s.applicant_name)
+        WHEN t.slug = 'akta-kematian' THEN COALESCE((SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name = 'meninggal_nama' LIMIT 1), s.applicant_name)
+        ELSE s.applicant_name
+      END as applicant_name,
+      CASE 
+        WHEN t.slug = 'akta-lahir' THEN COALESCE((SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name = 'anak_nik' LIMIT 1), (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name IN ('nik', 'pelapor_nik', 'pemohon_nik') LIMIT 1))
+        WHEN t.slug = 'akta-kematian' THEN COALESCE((SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name = 'meninggal_nik' LIMIT 1), (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name IN ('nik', 'pelapor_nik', 'pemohon_nik') LIMIT 1))
+        ELSE (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name IN ('pemohon_nik', 'nik', 'pelapor_nik') LIMIT 1)
+      END as nik
       FROM submissions s 
       JOIN form_templates t ON s.template_id = t.id 
       WHERE DATE(s.created_at) = ?
@@ -285,8 +294,17 @@ app.get('/api/submissions/archives', async (req, res) => {
     const { template, status, search } = req.query;
     
     let query = `
-      SELECT s.id, s.created_at as tanggal, t.name as jenis_dokumen, s.keterangan_kepemilikan, s.applicant_name as nama, s.status, s.tracking_number,
-      (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name IN ('nik', 'pelapor_nik', 'pemohon_nik') LIMIT 1) as nik,
+      SELECT s.id, s.created_at as tanggal, t.name as jenis_dokumen, s.keterangan_kepemilikan, s.status, s.tracking_number,
+      CASE 
+        WHEN t.slug = 'akta-lahir' THEN COALESCE((SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name = 'anak_nama' LIMIT 1), s.applicant_name)
+        WHEN t.slug = 'akta-kematian' THEN COALESCE((SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name = 'meninggal_nama' LIMIT 1), s.applicant_name)
+        ELSE s.applicant_name
+      END as nama,
+      CASE 
+        WHEN t.slug = 'akta-lahir' THEN COALESCE((SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name = 'anak_nik' LIMIT 1), (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name IN ('nik', 'pelapor_nik', 'pemohon_nik') LIMIT 1))
+        WHEN t.slug = 'akta-kematian' THEN COALESCE((SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name = 'meninggal_nik' LIMIT 1), (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name IN ('nik', 'pelapor_nik', 'pemohon_nik') LIMIT 1))
+        ELSE (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name IN ('pemohon_nik', 'nik', 'pelapor_nik') LIMIT 1)
+      END as nik,
       (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name IN ('alamat', 'pelapor_alamat', 'pemohon_alamat') LIMIT 1) as alamat,
       (SELECT field_value FROM submission_fields sf WHERE sf.submission_id = s.id AND sf.field_name IN ('nama_ayah', 'nama_ibu', 'nama_orang_tua', 'ayah_nama', 'ibu_nama') LIMIT 1) as nama_orang_tua
       FROM submissions s 
@@ -306,8 +324,8 @@ app.get('/api/submissions/archives', async (req, res) => {
     }
     
     if (search) {
-      query += ` AND (s.applicant_name LIKE ? OR s.tracking_number LIKE ?)`;
-      params.push(`%${search}%`, `%${search}%`);
+      query += ` AND (s.applicant_name LIKE ? OR s.tracking_number LIKE ? OR s.id IN (SELECT submission_id FROM submission_fields WHERE field_name IN ('anak_nama', 'meninggal_nama') AND field_value LIKE ?))`;
+      params.push(`%${search}%`, `%${search}%`, `%${search}%`);
     }
     
     if (template) {

@@ -179,7 +179,7 @@ const SuratPindahPDF = ({ submission, fields }) => {
         <div className="flex justify-end mr-12 mt-12 text-[12px]">
           <div className="text-center w-64">
             <p className="mb-1">Indramayu, &nbsp;&nbsp;&nbsp;{monthName} {year}</p>
-            <p className="mb-12">Yang Membuat Pernyataan,</p>
+            <p className="mb-24">Yang Membuat Pernyataan,</p>
             <p className="flex justify-between w-full">
               <span>(</span>
               <span className="font-bold">{submission.applicant_name}</span>
